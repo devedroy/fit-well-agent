@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitWell — Personalized AI Fitness & Wellness Assistant</title>
+  <meta name="description" content="FitWell is a privacy-conscious, local-memory fitness and wellness agent powered by Gemini and LangGraph.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Top Navigation Header -->
+    <header class="top-header" id="top-header">
+      <div class="header-container">
+        <div class="brand-group">
+          <div class="brand-logo" id="brand-logo">
+            <span class="logo-icon">⚡</span>
+            <span class="brand-text">Fit<span class="highlight">Well</span></span>
+          </div>
+          <div class="status-badge" id="system-status">
+            <span class="status-dot pulse"></span>
+            <span class="status-label">Local Memory: <code>data/memory.json</code></span>
+          </div>
+        </div>
+
+        <nav class="nav-tabs" id="nav-tabs" role="tablist">
+          <button class="tab-btn active" id="tab-btn-dashboard" data-tab="dashboard" role="tab" aria-selected="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+            <span>Dashboard</span>
+          </button>
+          <button class="tab-btn" id="tab-btn-chat" data-tab="chat" role="tab" aria-selected="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>AI Coach</span>
+          </button>
+          <button class="tab-btn" id="tab-btn-facilities" data-tab="facilities" role="tab" aria-selected="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Facilities</span>
+          </button>
+          <button class="tab-btn" id="tab-btn-profile" data-tab="profile" role="tab" aria-selected="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Profile & Memory</span>
+          </button>
+        </nav>
+
+        <div class="header-actions">
+          <button class="btn btn-secondary btn-sm" id="btn-quick-log-weight" title="Log current body weight">
+            <span>⚖️ Log Weight</span>
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btn-quick-log-meal" title="Log today's meal">
+            <span>🥗 Log Meal</span>
+          </button>
+          <button class="btn btn-primary btn-sm" id="btn-quick-log-workout" title="Log a workout session">
+            <span>💪 Log Workout</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="main-content">
+      
+      <!-- ═════════ TAB 1: DASHBOARD ═════════ -->
+      <section class="tab-pane active" id="tab-dashboard" role="tabpanel">
+        <!-- Welcome Hero Banner -->
+        <div class="dashboard-hero">
+          <div class="hero-text">
+            <h1 class="hero-title">Welcome back, <span id="user-display-name">Devpreyo</span>! 👋</h1>
+            <p class="hero-subtitle">Your private wellness companion is monitoring your stats. Keep pushing towards your <span id="user-display-goal" class="highlight-pill">muscle gain</span> goal.</p>
+          </div>
+          <div class="hero-badge-card" id="user-quick-profile-badge">
+            <div class="badge-item">
+              <span class="badge-label">Location</span>
+              <span class="badge-val" id="user-display-location">Kolkata</span>
+            </div>
+            <div class="badge-divider"></div>
+            <div class="badge-item">
+              <span class="badge-label">Fitness Level</span>
+              <span class="badge-val" id="user-display-level">Intermediate</span>
+            </div>
+            <div class="badge-divider"></div>
+            <div class="badge-item">
+              <span class="badge-label">Dietary</span>
+              <span class="badge-val" id="user-display-diet">No pork</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Metrics Grid -->
+        <div class="metrics-grid">
+          <!-- Metric 1: Weight -->
+          <div class="metric-card glass-card" id="metric-weight-card">
+            <div class="metric-header">
+              <span class="metric-icon weight-bg">⚖️</span>
+              <span class="metric-title">Body Weight</span>
+            </div>
+            <div class="metric-value-row">
+              <span class="metric-number" id="metric-weight-val">75.0</span>
+              <span class="metric-unit">kg</span>
+            </div>
+            <div class="metric-footnote" id="metric-weight-sub">
+              <span class="trend-pill trend-up">▲ +0.8 kg</span>
+              <span>from start (74.2 kg)</span>
+            </div>
+          </div>
+
+          <!-- Metric 2: Workouts -->
+          <div class="metric-card glass-card" id="metric-workout-card">
+            <div class="metric-header">
+              <span class="metric-icon workout-bg">🏋️‍♂️</span>
+              <span class="metric-title">Workouts Logged</span>
+            </div>
+            <div class="metric-value-row">
+              <span class="metric-number" id="metric-workout-count">2</span>
+              <span class="metric-unit">sessions</span>
+            </div>
+            <div class="metric-footnote" id="metric-workout-sub">
+              <span>90 mins total recorded</span>
+            </div>
+          </div>
+
+          <!-- Metric 3: Calories Today -->
+          <div class="metric-card glass-card" id="metric-calories-card">
+            <div class="metric-header">
+              <span class="metric-icon cal-bg">🔥</span>
+              <span class="metric-title">Logged Nutrition</span>
+            </div>
+            <div class="metric-value-row">
+              <span class="metric-number" id="metric-calories-val">1,950</span>
+              <span class="metric-unit">kcal</span>
+            </div>
+            <div class="macro-mini-bar">
+              <div class="macro-chunk p-chunk" style="width: 35%;" title="Protein: 118g"></div>
+              <div class="macro-chunk c-chunk" style="width: 50%;" title="Carbs: 220g"></div>
+              <div class="macro-chunk f-chunk" style="width: 15%;" title="Fat: 40g"></div>
+            </div>
+            <div class="metric-footnote">
+              <span class="macro-legend"><i class="dot p-dot"></i> P: <strong id="macro-p-total">118g</strong></span>
+              <span class="macro-legend"><i class="dot c-dot"></i> C: <strong id="macro-c-total">220g</strong></span>
+              <span class="macro-legend"><i class="dot f-dot"></i> F: <strong id="macro-f-total">40g</strong></span>
+            </div>
+          </div>
+
+          <!-- Metric 4: Facilities Nearby -->
+          <div class="metric-card glass-card" id="metric-facilities-card">
+            <div class="metric-header">
+              <span class="metric-icon map-bg">📍</span>
+              <span class="metric-title">Nearby Facilities</span>
+            </div>
+            <div class="metric-value-row">
+              <span class="metric-number" id="metric-facility-count">20</span>
+              <span class="metric-unit">spots</span>
+            </div>
+            <div class="metric-footnote">
+              <span>Closest: <strong>0.3 km</strong> (Riverside Park)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts & Activity Split -->
+        <div class="dashboard-columns">
+          
+          <!-- Left Column: Weight Progress Chart & Strength PRs -->
+          <div class="dash-col main-col">
+            <!-- Weight Progress Chart -->
+            <div class="card glass-card chart-container-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h2 class="card-title">Weight Progression</h2>
+                  <span class="card-subtitle">Tracking body mass over time</span>
+                </div>
+                <button class="btn btn-ghost btn-sm" id="btn-chart-add-weight">+ Add Entry</button>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="weight-chart" width="600" height="220" aria-label="Weight progress chart" role="img"></canvas>
+              </div>
+            </div>
+
+            <!-- Recent Workouts -->
+            <div class="card glass-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h2 class="card-title">Recent Workouts</h2>
+                  <span class="card-subtitle">Exercise routines & lift records</span>
+                </div>
+                <button class="btn btn-ghost btn-sm" id="btn-dash-add-workout">+ New Workout</button>
+              </div>
+              <div class="workout-list" id="workout-list-container">
+                <!-- Dynamically populated -->
+                <div class="loading-state">Loading workout history...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Recent Meals & Strength PRs -->
+          <div class="dash-col side-col">
+            <!-- Strength Records -->
+            <div class="card glass-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h2 class="card-title">Strength Records</h2>
+                  <span class="card-subtitle">Personal bests in memory</span>
+                </div>
+              </div>
+              <div class="pr-grid" id="pr-list-container">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Meal Logs -->
+            <div class="card glass-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h2 class="card-title">Recent Meals</h2>
+                  <span class="card-subtitle">Macronutrient logs</span>
+                </div>
+                <button class="btn btn-ghost btn-sm" id="btn-dash-add-meal">+ Log Meal</button>
+              </div>
+              <div class="meal-list" id="meal-list-container">
+                <!-- Dynamically populated -->
+                <div class="loading-state">Loading meal history...</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ═════════ TAB 2: AI COACH CHAT ═════════ -->
+      <section class="tab-pane" id="tab-chat" role="tabpanel">
+        <div class="chat-layout glass-card">
+          <!-- Chat Header -->
+          <div class="chat-header">
+            <div class="chat-agent-info">
+              <div class="agent-avatar">🤖</div>
+              <div>
+                <h2 class="agent-name">FitWell AI Coach</h2>
+                <span class="agent-sub">Powered by Gemini &amp; LangGraph • Direct Tool Access</span>
+              </div>
+            </div>
+            <div class="chat-header-actions">
+              <button class="btn btn-ghost btn-sm" id="btn-clear-chat" title="Clear conversation history">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <span>Clear History</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Suggestion Chips -->
+          <div class="suggestion-chips" id="suggestion-chips">
+            <span class="chip-label">Quick Prompts:</span>
+            <button class="prompt-chip" data-prompt="Design a 4-day muscle gain workout split for me based on my profile.">💪 Suggest 4-Day Workout Split</button>
+            <button class="prompt-chip" data-prompt="What should I eat for a high-protein lunch around 700 kcal?">🥗 High-Protein Lunch Idea</button>
+            <button class="prompt-chip" data-prompt="Find nearby strength training gyms in Kolkata.">📍 Find Gyms Near Me</button>
+            <button class="prompt-chip" data-prompt="Analyze my recent weight progress and give feedback.">📊 Analyze Weight Trend</button>
+            <button class="prompt-chip" data-prompt="I just ran for 30 minutes and burned 280 calories. Please log this cardio session.">🏃 Log a 30-min Run</button>
+          </div>
+
+          <!-- Chat Messages Scroll Container -->
+          <div class="chat-messages-container" id="chat-messages">
+            <!-- Messages inserted here via JavaScript -->
+          </div>
+
+          <!-- Chat Input Area -->
+          <form class="chat-input-bar" id="chat-form">
+            <input 
+              type="text" 
+              class="chat-input" 
+              id="chat-input-field" 
+              placeholder="Ask about workouts, meals, gym locations, or tell FitWell what you did today..." 
+              autocomplete="off"
+              required
+            >
+            <button type="submit" class="btn btn-primary btn-send" id="chat-send-btn">
+              <span>Send</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ═════════ TAB 3: NEARBY FACILITIES ═════════ -->
+      <section class="tab-pane" id="tab-facilities" role="tabpanel">
+        <div class="facilities-header-row">
+          <div>
+            <h2 class="section-title">Nearby Fitness Facilities</h2>
+            <p class="section-subtitle">Local fitness centres, studios, and parks in and around your area.</p>
+          </div>
+          <div class="facility-search-box">
+            <input type="text" id="facility-search-input" class="search-input" placeholder="Search by name or amenity (e.g., sauna, pool, weights)...">
+          </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="facility-filters-bar glass-card">
+          <div class="filter-pills" id="facility-type-filters">
+            <button class="filter-pill active" data-type="all">All (20)</button>
+            <button class="filter-pill" data-type="gym">🏋️ Gyms</button>
+            <button class="filter-pill" data-type="yoga">🧘 Yoga &amp; Pilates</button>
+            <button class="filter-pill" data-type="park">🌳 Parks &amp; Trails</button>
+            <button class="filter-pill" data-type="crossfit">⚡ CrossFit</button>
+            <button class="filter-pill" data-type="pool">🏊 Pools</button>
+            <button class="filter-pill" data-type="cycling">🚴 Cycling</button>
+          </div>
+          <div class="distance-filter">
+            <label for="distance-slider">Max Distance: <strong id="distance-slider-val">10 km</strong></label>
+            <input type="range" id="distance-slider" min="0.5" max="15" step="0.5" value="10">
+          </div>
+        </div>
+
+        <!-- Facilities Cards Grid -->
+        <div class="facilities-grid" id="facilities-grid-container">
+          <!-- Dynamically populated via JS -->
+          <div class="loading-state">Loading nearby facilities...</div>
+        </div>
+      </section>
+
+      <!-- ═════════ TAB 4: PROFILE & MEMORY ═════════ -->
+      <section class="tab-pane" id="tab-profile" role="tabpanel">
+        <div class="profile-layout-grid">
+          
+          <!-- Left: Profile Form -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h2 class="card-title">User Profile</h2>
+                <span class="card-subtitle">Personalised attributes informing agent recommendations</span>
+              </div>
+            </div>
+
+            <form class="profile-form" id="profile-edit-form">
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label for="prof-name">Full Name</label>
+                  <input type="text" id="prof-name" name="name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label for="prof-location">Location</label>
+                  <input type="text" id="prof-location" name="location" class="form-input">
+                </div>
+              </div>
+
+              <div class="form-row three-col">
+                <div class="form-group">
+                  <label for="prof-age">Age (years)</label>
+                  <input type="number" id="prof-age" name="age" class="form-input" min="10" max="120">
+                </div>
+                <div class="form-group">
+                  <label for="prof-gender">Gender</label>
+                  <select id="prof-gender" name="gender" class="form-input">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="prof-fitness-level">Fitness Level</label>
+                  <select id="prof-fitness-level" name="fitness_level" class="form-input">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label for="prof-weight">Weight (kg)</label>
+                  <input type="number" step="0.1" id="prof-weight" name="weight_kg" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label for="prof-height">Height (cm)</label>
+                  <input type="number" step="0.5" id="prof-height" name="height_cm" class="form-input">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prof-goal">Primary Fitness Goal</label>
+                <input type="text" id="prof-goal" name="goal" class="form-input" placeholder="e.g. muscle gain, weight loss, 10k running">
+              </div>
+
+              <div class="form-group">
+                <label for="prof-diet">Dietary Restrictions (comma separated)</label>
+                <input type="text" id="prof-diet" name="dietary_restrictions" class="form-input" placeholder="e.g. no pork, vegetarian, gluten-free">
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="btn-save-profile">Save Profile Changes</button>
+                <span class="save-status-msg" id="profile-save-status"></span>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right: Privacy Guarantee & Raw JSON Inspector -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h2 class="card-title">Local Memory Storage</h2>
+                <span class="card-subtitle">Zero cloud databases — 100% on-device JSON</span>
+              </div>
+              <div class="memory-actions">
+                <button class="btn btn-ghost btn-sm" id="btn-refresh-memory">Refresh</button>
+                <button class="btn btn-danger btn-sm" id="btn-reset-memory">Reset to Blank</button>
+                <button class="btn btn-secondary btn-sm" id="btn-reseed-memory">Re-seed Demo</button>
+              </div>
+            </div>
+
+            <div class="privacy-callout">
+              <div class="callout-icon">🛡️</div>
+              <div class="callout-body">
+                <h4>Privacy-First Architecture</h4>
+                <p>Your workouts, meals, weights, and conversations remain exclusively saved in your local <code>data/memory.json</code> file. Gemini reasoning uses your local profile to provide context during conversations, without remote database persistence.</p>
+              </div>
+            </div>
+
+            <div class="memory-inspector">
+              <div class="inspector-header">
+                <span>Live <code>data/memory.json</code> content:</span>
+                <button class="btn btn-ghost btn-xs" id="btn-copy-json">Copy JSON</button>
+              </div>
+              <pre class="json-code-block" id="raw-memory-json"><code>Loading memory.json...</code></pre>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ═════════ MODALS ═════════ -->
+  
+  <!-- Log Workout Modal -->
+  <dialog class="app-modal" id="modal-log-workout">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">💪 Log Workout Session</h3>
+        <button class="modal-close" data-close="modal-log-workout">&times;</button>
+      </div>
+      <form id="form-log-workout">
+        <div class="form-row two-col">
+          <div class="form-group">
+            <label for="workout-type-input">Type</label>
+            <select id="workout-type-input" class="form-input" required>
+              <option value="strength">Strength</option>
+              <option value="cardio">Cardio</option>
+              <option value="hiit">HIIT</option>
+              <option value="yoga">Yoga / Mobility</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="workout-duration-input">Duration (minutes)</label>
+            <input type="number" id="workout-duration-input" class="form-input" value="45" min="5" max="300" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Exercises</label>
+          <div class="exercise-rows-container" id="exercise-rows-container">
+            <div class="exercise-input-row">
+              <input type="text" placeholder="Exercise name (e.g. Bench Press)" class="form-input ex-name" required>
+              <input type="number" placeholder="Sets" class="form-input ex-sets" style="width: 75px;" value="3" min="1">
+              <input type="number" placeholder="Reps" class="form-input ex-reps" style="width: 75px;" value="10" min="1">
+              <input type="number" placeholder="Weight (kg)" class="form-input ex-weight" style="width: 105px;" value="60" min="0" step="0.5">
+              <button type="button" class="btn-remove-row" title="Remove">&times;</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-ghost btn-xs" id="btn-add-exercise-row">+ Add Another Exercise</button>
+        </div>
+
+        <div class="form-group">
+          <label for="workout-notes-input">Notes (optional)</label>
+          <textarea id="workout-notes-input" class="form-input" rows="2" placeholder="e.g. Felt great, added 2.5kg on squats."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-log-workout">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Workout</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Log Meal Modal -->
+  <dialog class="app-modal" id="modal-log-meal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">🥗 Log Meal</h3>
+        <button class="modal-close" data-close="modal-log-meal">&times;</button>
+      </div>
+      <form id="form-log-meal">
+        <div class="form-row two-col">
+          <div class="form-group">
+            <label for="meal-type-input">Meal Category</label>
+            <select id="meal-type-input" class="form-input" required>
+              <option value="breakfast">Breakfast</option>
+              <option value="lunch">Lunch</option>
+              <option value="dinner">Dinner</option>
+              <option value="snack">Snack</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="meal-calories-input">Total Calories (kcal)</label>
+            <input type="number" id="meal-calories-input" class="form-input" placeholder="e.g. 650" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="meal-foods-input">Foods (comma separated)</label>
+          <input type="text" id="meal-foods-input" class="form-input" placeholder="e.g. Grilled Chicken, Brown Rice, Steamed Broccoli" required>
+        </div>
+
+        <div class="form-row three-col">
+          <div class="form-group">
+            <label for="meal-p-input">Protein (g)</label>
+            <input type="number" step="0.1" id="meal-p-input" class="form-input" placeholder="e.g. 45" required>
+          </div>
+          <div class="form-group">
+            <label for="meal-c-input">Carbs (g)</label>
+            <input type="number" step="0.1" id="meal-c-input" class="form-input" placeholder="e.g. 60" required>
+          </div>
+          <div class="form-group">
+            <label for="meal-f-input">Fat (g)</label>
+            <input type="number" step="0.1" id="meal-f-input" class="form-input" placeholder="e.g. 12" required>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-log-meal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Meal</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Log Weight Modal -->
+  <dialog class="app-modal" id="modal-log-weight">
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <h3 class="modal-title">⚖️ Log Body Weight</h3>
+        <button class="modal-close" data-close="modal-log-weight">&times;</button>
+      </div>
+      <form id="form-log-weight">
+        <div class="form-group">
+          <label for="weight-input-val">Current Weight (kg)</label>
+          <input type="number" step="0.1" id="weight-input-val" class="form-input" placeholder="e.g. 75.2" min="30" max="300" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-log-weight">Cancel</button>
+          <button type="submit" class="btn btn-primary">Record Weight</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Notification Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="/static/js/dashboard.js"></script>
+  <script src="/static/js/chat.js"></script>
+</body>
+</html>
