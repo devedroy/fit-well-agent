@@ -1,0 +1,22 @@
+{
+  "user_profile": {
+    "name": "Devpreyo",
+    "age": null,
+    "gender": null,
+    "weight_kg": null,
+    "height_cm": null,
+    "goal": null,
+    "fitness_level": null,
+    "dietary_restrictions": [],
+    "location": null,
+    "updated_at": null
+  },
+  "conversation_history": [],
+  "workout_history": [],
+  "meal_logs": [],
+  "progress_tracking": {
+    "weight_log": [],
+    "strength_log": [],
+    "cardio_log": []
+  }
+}
