@@ -22,7 +22,7 @@ from database.db_manager import (
     get_meal_logs,
     get_progress_tracking,
     reset_memory,
-    _load,
+    dump_memory,
 )
 from graph.agent import chat as agent_chat
 
@@ -84,9 +84,9 @@ def post_profile():
 # ── Memory Debug ───────────────────────────────────────────────────────────────
 
 @bp.route("/api/memory", methods=["GET"])
-def dump_memory():
+def get_memory_dump():
     """Return the full memory.json document (useful for debugging)."""
-    return jsonify(_load())
+    return jsonify(dump_memory())
 
 
 @bp.route("/api/memory/reset", methods=["POST"])

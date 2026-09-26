@@ -30,6 +30,11 @@ def _save(data: dict) -> None:
     tmp.replace(MEMORY_FILE)
 
 
+def dump_memory() -> dict:
+    """Return the full memory document (public alias for _load)."""
+    return _load()
+
+
 # ──────────────────────────────────────────────
 # User Profile
 # ──────────────────────────────────────────────

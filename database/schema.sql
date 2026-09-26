@@ -1,0 +1,20 @@
+-- schema.sql is no longer used.
+-- Persistence is handled via data/memory.json (see database/db_manager.py).
+--
+-- memory.json structure:
+-- {
+--   "user_profile":        { name, age, gender, weight_kg, height_cm,
+--                            goal, fitness_level, dietary_restrictions,
+--                            location, updated_at }
+--   "conversation_history": [ { role, content, timestamp }, ... ]
+--   "workout_history":      [ { id, date, type, duration_min,
+--                               exercises, notes }, ... ]
+--   "meal_logs":            [ { id, date, meal_type, foods,
+--                               total_calories, macros }, ... ]
+--   "progress_tracking":    { weight_log:   [ { date, weight_kg } ],
+--                             strength_log: [ { date, exercise,
+--                                               weight_kg, reps, sets } ],
+--                             cardio_log:   [ { date, activity,
+--                                               duration_min, distance_km,
+--                                               calories } ] }
+-- }
