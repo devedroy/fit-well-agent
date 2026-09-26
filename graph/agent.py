@@ -70,6 +70,33 @@ def build_graph():
 graph = build_graph()
 
 
+# ── Graph Visualisation ───────────────────────────────────────────────────────
+
+def display_graph():
+    """
+    Render the compiled LangGraph topology inline.
+
+    In a Jupyter / IPython environment this renders as a PNG image cell.
+    In a plain Python script it saves 'agent_graph.png' to the project root
+    and prints the path.
+
+    Usage:
+        from graph.agent import display_graph
+        display_graph()
+    """
+    try:
+        from IPython.display import display, Image  # type: ignore
+        png_bytes = graph.get_graph().draw_mermaid_png()
+        display(Image(png_bytes))
+    except ImportError:
+        # Fallback: save to disk when IPython is not available
+        import pathlib
+        out = pathlib.Path(__file__).parent.parent / "agent_graph.png"
+        png_bytes = graph.get_graph().draw_mermaid_png()
+        out.write_bytes(png_bytes)
+        print(f"Graph saved → {out}")
+
+
 # ── Public API ────────────────────────────────────────────────────────────────
 
 def chat(user_message: str) -> str:

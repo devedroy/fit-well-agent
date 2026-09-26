@@ -8,4 +8,4 @@
 ## Agent Orchestration
 *   **Logic Framework:** LangGraph to manage the ReAct cognitive architecture, utilizing a `TypedDict` for the `AgentState` and `add_messages` for conversation history.
 *   **LLM Engine:** Google Gemini API (`langchain-google-genai`) configured with `bind_tools()` to enable deterministic function calling.
-*   **External APIs:** Google Maps Places API for location-based facility queries.
+*   **Location / Facility Search:** Dummy data (`DUMMY_FACILITIES` in `graph/tools.py`) provides a curated list of gyms, parks, and studios with name, type, address, rating, and distance. No external API key required. Controlled by the `USE_DUMMY_MAP_DATA` env flag.

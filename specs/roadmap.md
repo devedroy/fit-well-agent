@@ -1,7 +1,7 @@
 ## Phase 1: Foundation & Data Layer
 1.  Scaffold the Flask application structure and core API routes.
 2.  Create `data/memory.json` with the full schema (user profile, conversation history, workout history, meal logs, progress tracking) and populate it with realistic starter data using `database/seed_data.py`.
-3.  Establish environment variables for the Gemini and Google Maps API keys in `.env`.
+3.  Establish environment variables for the Gemini API key and set `USE_DUMMY_MAP_DATA=true` in `.env` to enable built-in facility data (no external maps API required).
 
 ## Phase 2: Core Agent Logic (LangGraph + Gemini)
 1.  Define Python functions in `database/db_manager.py` for all memory read/write operations (profile, messages, workouts, meals, progress).
