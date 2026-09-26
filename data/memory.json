@@ -1,22 +1,201 @@
 {
   "user_profile": {
     "name": "Devpreyo",
-    "age": null,
-    "gender": null,
-    "weight_kg": null,
-    "height_cm": null,
-    "goal": null,
-    "fitness_level": null,
-    "dietary_restrictions": [],
-    "location": null,
-    "updated_at": null
+    "age": 25,
+    "gender": "male",
+    "weight_kg": 75.0,
+    "height_cm": 178.0,
+    "goal": "muscle gain",
+    "fitness_level": "intermediate",
+    "dietary_restrictions": [
+      "no pork"
+    ],
+    "location": "Kolkata",
+    "updated_at": "2026-09-26T10:31:58.367819+00:00"
   },
-  "conversation_history": [],
-  "workout_history": [],
-  "meal_logs": [],
+  "conversation_history": [
+    {
+      "role": "user",
+      "content": "I want to eat sweet today, can I?",
+      "timestamp": "2026-09-26T10:34:50.937006+00:00"
+    },
+    {
+      "role": "assistant",
+      "content": "Yes, absolutely, **Devpreyo**! You can definitely enjoy a sweet today. \n\nSince your primary goal is **muscle gain**, carbohydrates are essential for fueling tough training sessions and replenishing muscle glycogen. A sweet treat can easily fit into your plan if you keep a few tips in mind:\n\n### How to make the most of it:\n1. **Best Timing (Post-Workout):** \n   - If you trained today, having a sweet right after your workout is ideal. Your muscles are primed to take up simple carbs to refill glycogen stores rather than storing them as fat.\n2. **Prioritize Protein First:**\n   - Make sure you hit your daily protein target (~130–150g) through your main meals so muscle repair isn't compromised.\n3. **Smart Local Picks in Kolkata:**\n   - **Chhena-based sweets** (like *Sandesh* or *Rasgulla* lightly squeezed): Made from fresh cottage cheese/curd, giving you a boost of calcium and dairy protein along with the carbs.\n   - **Mishti Doi** or a bowl of yogurt mixed with jaggery/honey and fruit.\n4. **Portion Control:** \n   - Stick to 1–2 pieces (around 150–250 kcal) to satisfy your craving without displacing nutrient-dense whole foods.\n\nWhat sweet are you craving today? If you'd like, let me know what you have and I can help log the calories and macros!",
+      "timestamp": "2026-09-26T10:34:58.841142+00:00"
+    },
+    {
+      "role": "user",
+      "content": "how was my routine yesterday?",
+      "timestamp": "2026-09-26T10:37:57.403390+00:00"
+    },
+    {
+      "role": "assistant",
+      "content": "Yesterday was a **fantastic, high-output day**, Devpreyo! You crushed both your training and nutrition. Here is the full breakdown:\n\n---\n\n### 🏋️‍♂️ Workouts & Training\nYou had an impressive double session:\n1. **Morning Cardio (30 min):** Treadmill run.\n2. **Strength Session (60 min):** Heavy compound focus\n   - **Squat:** 4 sets × 6 reps @ 90 kg *(+5 kg increase — great progressive overload!)*\n   - **Deadlift:** 3 sets × 5 reps @ 110 kg\n   - **Bench Press:** 4 sets × 8 reps @ 70 kg\n   - **Pull-ups:** 3 sets × 10 reps\n\n---\n\n### 🥗 Nutrition & Macros\nYou logged 3 solid, clean meals:\n- **Breakfast (520 kcal):** Oats, banana, 2 boiled eggs, black coffee (28g P / 65g C / 12g F)\n- **Lunch (680 kcal):** Grilled chicken breast, brown rice, mixed salad (52g P / 70g C / 10g F)\n- **Dinner (750 kcal):** Paneer curry, 2 whole wheat rotis, dal (38g P / 85g C / 18g F)\n\n**Daily Totals:**\n- **Calories:** ~1,950 kcal\n- **Protein:** 118 g (~1.6 g/kg)\n- **Carbs:** 220 g\n- **Fat:** 40 g\n\n---\n\n### 💡 Coach’s Takeaway\n- **Wins:** You hit heavy lifts with progressive overload and kept food quality very clean.\n- **Tweak for Muscle Gain:** Because you did 90 minutes of total activity (cardio + heavy lifting), **1,950 kcal** is likely around maintenance or a slight deficit. To maximize muscle hypertrophy at 75 kg, aim for **~2,200–2,400 kcal** and push protein closer to **130–150 g** (adding an afternoon protein shake or snack does the trick). \n\nOverall, exceptional consistency—keep that momentum going!",
+      "timestamp": "2026-09-26T10:38:06.433881+00:00"
+    },
+    {
+      "role": "user",
+      "content": "can you recommend meal plan for today?",
+      "timestamp": "2026-09-26T10:39:16.080337+00:00"
+    },
+    {
+      "role": "assistant",
+      "content": "Here is a customized meal plan for today, **Devpreyo**, designed specifically for **muscle gain** at **75 kg**, keeping your dietary preference (*no pork*) and your craving for a **sweet treat** seamlessly integrated!\n\n### Target Daily Targets:\n- **Calories:** ~2,350 kcal\n- **Protein:** ~145 g (optimal ~1.9 g/kg for hypertrophy)\n- **Carbs:** ~280 g\n- **Fat:** ~55 g\n\n---\n\n### 🍳 1. Breakfast (Power Start)\n* **Foods:** \n  - 3 whole eggs (scrambled or omelette) + 1 extra egg white\n  - 2 slices whole wheat toast with 1 tsp butter or peanut butter\n  - 1 medium banana\n  - Black coffee or green tea\n* **Macros:** ~520 kcal | **30g Protein** | 55g Carbs | 18g Fat\n\n---\n\n### 🍛 2. Lunch (Clean Fuel)\n* **Foods:**\n  - 150g grilled chicken breast or fish (or 180g low-fat paneer/tofu)\n  - 1.5 cups cooked basmati or brown rice\n  - 1 bowl yellow dal (lentil soup)\n  - Fresh cucumber and tomato salad\n* **Macros:** ~680 kcal | **50g Protein** | 80g Carbs | 12g Fat\n\n---\n\n### 🍯 3. Pre/Post-Workout Snack & Sweet Cravings (Your Sweet Treat!)\n* **Foods:**\n  - 1 scoop Whey Protein in water or skim milk (or a glass of sattu drink / Greek yogurt)\n  - **1–2 pieces of fresh Sandesh or 1 medium Rasgulla** (chhena-based gives you extra milk solids & rapid glycogen refilling)\n* **Macros:** ~320 kcal | **28g Protein** | 40g Carbs | 5g Fat\n\n---\n\n### 🍲 4. Dinner (Sustained Overnight Recovery)\n* **Foods:**\n  - 3 whole wheat rotis / chapatis (lightly brushed with ghee)\n  - 1 bowl thick chana masala / rajma or chicken curry\n  - 1 bowl stir-fried vegetables (spinach, beans, or bell peppers)\n  - 1 cup plain curd (dahi)\n* **Macros:** ~650 kcal | **35g Protein** | 85g Carbs | 16g Fat\n\n---\n\n### 💡 Quick Tips for Today:\n1. **Hydration:** Aim for 3–3.5 litres of water throughout the day.\n2. **Timing your sweet:** Enjoy your Sandesh/Rasgulla around your workout window or alongside your afternoon protein boost.\n\nWhenever you have your meals, let me know and we can log them right away!",
+      "timestamp": "2026-09-26T10:39:34.024961+00:00"
+    }
+  ],
+  "workout_history": [
+    {
+      "id": 1,
+      "date": "2026-09-26T10:23:11.991003+00:00",
+      "type": "strength",
+      "duration_min": 60,
+      "exercises": [
+        {
+          "name": "Bench Press",
+          "sets": 4,
+          "reps": 8,
+          "weight_kg": 70
+        },
+        {
+          "name": "Squat",
+          "sets": 4,
+          "reps": 6,
+          "weight_kg": 90
+        },
+        {
+          "name": "Deadlift",
+          "sets": 3,
+          "reps": 5,
+          "weight_kg": 110
+        },
+        {
+          "name": "Pull-up",
+          "sets": 3,
+          "reps": 10,
+          "weight_kg": 0
+        }
+      ],
+      "notes": "Felt strong today. Increased squat weight by 5 kg."
+    },
+    {
+      "id": 2,
+      "date": "2026-09-26T10:23:11.991427+00:00",
+      "type": "cardio",
+      "duration_min": 30,
+      "exercises": [],
+      "notes": "Morning run on the treadmill."
+    }
+  ],
+  "meal_logs": [
+    {
+      "id": 1,
+      "date": "2026-09-26T10:23:11.991685+00:00",
+      "meal_type": "breakfast",
+      "foods": [
+        "oats",
+        "banana",
+        "boiled eggs (2)",
+        "black coffee"
+      ],
+      "total_calories": 520,
+      "macros": {
+        "protein_g": 28,
+        "carbs_g": 65,
+        "fat_g": 12
+      }
+    },
+    {
+      "id": 2,
+      "date": "2026-09-26T10:23:11.991968+00:00",
+      "meal_type": "lunch",
+      "foods": [
+        "grilled chicken breast",
+        "brown rice",
+        "mixed salad"
+      ],
+      "total_calories": 680,
+      "macros": {
+        "protein_g": 52,
+        "carbs_g": 70,
+        "fat_g": 10
+      }
+    },
+    {
+      "id": 3,
+      "date": "2026-09-26T10:23:11.992226+00:00",
+      "meal_type": "dinner",
+      "foods": [
+        "paneer curry",
+        "whole wheat roti (2)",
+        "dal"
+      ],
+      "total_calories": 750,
+      "macros": {
+        "protein_g": 38,
+        "carbs_g": 85,
+        "fat_g": 18
+      }
+    }
+  ],
   "progress_tracking": {
-    "weight_log": [],
-    "strength_log": [],
-    "cardio_log": []
+    "weight_log": [
+      {
+        "date": "2026-09-26T10:23:11.992470+00:00",
+        "weight_kg": 74.2
+      },
+      {
+        "date": "2026-09-26T10:23:11.992707+00:00",
+        "weight_kg": 74.5
+      },
+      {
+        "date": "2026-09-26T10:23:11.992946+00:00",
+        "weight_kg": 74.8
+      },
+      {
+        "date": "2026-09-26T10:23:11.993197+00:00",
+        "weight_kg": 75.0
+      }
+    ],
+    "strength_log": [
+      {
+        "date": "2026-09-26T10:23:11.994502+00:00",
+        "exercise": "Bench Press",
+        "weight_kg": 70.0,
+        "reps": 8,
+        "sets": 4
+      },
+      {
+        "date": "2026-09-26T10:23:11.994817+00:00",
+        "exercise": "Squat",
+        "weight_kg": 90.0,
+        "reps": 6,
+        "sets": 4
+      },
+      {
+        "date": "2026-09-26T10:23:11.995088+00:00",
+        "exercise": "Deadlift",
+        "weight_kg": 110.0,
+        "reps": 5,
+        "sets": 3
+      }
+    ],
+    "cardio_log": [
+      {
+        "date": "2026-09-26T10:23:11.993666+00:00",
+        "activity": "running",
+        "duration_min": 25,
+        "distance_km": 4.0,
+        "calories": 280
+      },
+      {
+        "date": "2026-09-26T10:23:11.994024+00:00",
+        "activity": "cycling",
+        "duration_min": 40,
+        "distance_km": 14.0,
+        "calories": 320
+      }
+    ]
   }
 }

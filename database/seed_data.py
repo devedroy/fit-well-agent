@@ -21,9 +21,11 @@ from database.db_manager import (
     log_workout,
     log_meal,
     log_weight,
+    log_strength,
     log_cardio,
     reset_memory,
 )
+
 
 
 SEED_PROFILE = {
@@ -84,23 +86,31 @@ SEED_CARDIO = [
     {"activity": "running",  "duration_min": 25, "distance_km": 4.0,  "calories": 280},
     {"activity": "cycling",  "duration_min": 40, "distance_km": 14.0, "calories": 320},
 ]
+SEED_STRENGTH = [
+    {"exercise": "Bench Press", "weight_kg": 70.0, "reps": 8, "sets": 4},
+    {"exercise": "Squat",       "weight_kg": 90.0, "reps": 6, "sets": 4},
+    {"exercise": "Deadlift",    "weight_kg": 110.0, "reps": 5, "sets": 3},
+]
 
 
-def seed():
+def seed(force: bool = False):
     existing = dump_memory()
     has_data = (
-        existing["user_profile"]["name"] is not None
-        or existing["workout_history"]
-        or existing["meal_logs"]
+        existing.get("user_profile", {}).get("name") is not None
+        or existing.get("workout_history")
+        or existing.get("meal_logs")
     )
 
-    if has_data:
-        answer = input(
-            "memory.json already contains data. Reset and re-seed? [y/N]: "
-        ).strip().lower()
-        if answer != "y":
-            print("Aborted — existing data kept.")
-            return
+    if has_data and not force:
+        if sys.stdin.isatty():
+            answer = input(
+                "memory.json already contains data. Reset and re-seed? [y/N]: "
+            ).strip().lower()
+            if answer != "y":
+                print("Aborted — existing data kept.")
+                return
+        else:
+            print("Non-interactive mode: resetting and re-seeding memory.json...")
 
     print("Resetting memory …")
     reset_memory()
@@ -129,8 +139,15 @@ def seed():
     for c in SEED_CARDIO:
         log_cardio(**c)
 
+    print("Seeding strength PR log …")
+    for s in SEED_STRENGTH:
+        log_strength(**s)
+
     print("✅ Seed complete. data/memory.json is ready.")
 
 
+
 if __name__ == "__main__":
-    seed()
+    force_flag = "--force" in sys.argv or "-f" in sys.argv
+    seed(force=force_flag)
+
