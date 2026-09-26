@@ -17,6 +17,8 @@ MEMORY_FILE = _DATA_DIR / "memory.json"
 
 def _load() -> dict:
     """Read and return the full memory document."""
+    if not MEMORY_FILE.exists():
+        reset_memory()
     with open(MEMORY_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
