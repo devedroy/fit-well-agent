@@ -12,8 +12,12 @@ Otherwise the graph terminates and returns the final AI message.
 """
 
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langgraph.graph import StateGraph, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
 
@@ -21,13 +25,22 @@ from graph.state import AgentState
 from graph.tools import ALL_TOOLS
 from database.db_manager import get_user_profile, append_message
 
-# ── LLM ──────────────────────────────────────────────────────────────────────
-_llm = ChatGoogleGenerativeAI(
-    model="gemini-2.0-flash",
-    google_api_key=os.environ["GEMINI_API_KEY"],
-    temperature=0.7,
-)
-_llm_with_tools = _llm.bind_tools(ALL_TOOLS)
+
+def _get_llm():
+    """Retrieve LLM client with current environment API key."""
+    load_dotenv(override=True)
+    api_key = os.getenv("GEMINI_API_KEY", "").strip()
+    if not api_key or api_key == "your_gemini_api_key_here":
+        raise ValueError(
+            "Gemini API key is not configured. Please set a valid GEMINI_API_KEY in your .env file."
+        )
+    model_name = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+    return ChatGoogleGenerativeAI(
+        model=model_name,
+        google_api_key=api_key,
+        temperature=0.7,
+    ).bind_tools(ALL_TOOLS)
+
 
 # ── System Prompt ─────────────────────────────────────────────────────────────
 _SYSTEM_PROMPT = """You are FitWell, a personalized fitness and wellness AI assistant.
@@ -46,9 +59,11 @@ Tone: Friendly, motivating, and concise. Avoid generic advice."""
 
 def reason(state: AgentState) -> dict:
     """LLM reasoning node: calls Gemini with the full message history."""
+    llm_with_tools = _get_llm()
     messages = [SystemMessage(content=_SYSTEM_PROMPT)] + state["messages"]
-    response = _llm_with_tools.invoke(messages)
+    response = llm_with_tools.invoke(messages)
     return {"messages": [response]}
+
 
 
 # ── Graph Assembly ────────────────────────────────────────────────────────────
@@ -57,13 +72,14 @@ def build_graph():
     builder = StateGraph(AgentState)
 
     builder.add_node("reason", reason)
-    builder.add_node("tool_node", ToolNode(ALL_TOOLS))
+    builder.add_node("tools", ToolNode(ALL_TOOLS))
 
     builder.add_edge(START, "reason")
     builder.add_conditional_edges("reason", tools_condition)
-    builder.add_edge("tool_node", "reason")
+    builder.add_edge("tools", "reason")
 
     return builder.compile()
+
 
 
 # Compiled graph — imported by Flask routes
@@ -111,30 +127,62 @@ def chat(user_message: str) -> str:
     """
     from database.db_manager import get_conversation_history
 
+    load_dotenv(override=True)
+    api_key = os.getenv("GEMINI_API_KEY", "").strip()
+
+    # If the key has not been set yet
+    if not api_key or api_key == "your_gemini_api_key_here":
+        append_message("user", user_message)
+        reply = (
+            "👋 Hello! I'm FitWell, your AI fitness and wellness coach.\n\n"
+            "⚠️ **Gemini API Key Required**: Please update `GEMINI_API_KEY` in your `.env` file with a valid Google Gemini API key to activate intelligent agent reasoning.\n\n"
+            "In the meantime, your local database is initialized! You can explore the **Dashboard**, log workouts and meals, track body metrics, and browse nearby gyms in the **Facilities** tab."
+        )
+        append_message("assistant", reply)
+        return reply
+
     # Persist the incoming user message
     append_message("user", user_message)
 
-    # Reconstruct full history for the LLM context
+    # Reconstruct history for the LLM context (up to recent 20 turns)
     history = get_conversation_history()
     lc_messages = []
-    for turn in history:
-        if turn["role"] == "user":
-            lc_messages.append(HumanMessage(content=turn["content"]))
-        # assistant messages will be re-generated; we only feed user turns
-        # to keep the state clean (the LLM reconstructs its own turns from context)
+    for turn in history[-20:]:
+        role = turn.get("role")
+        content = turn.get("content", "")
+        if role == "user":
+            lc_messages.append(HumanMessage(content=content))
+        elif role == "assistant":
+            lc_messages.append(AIMessage(content=content))
 
     initial_state: AgentState = {
         "messages": lc_messages,
         "user_profile": get_user_profile(),
     }
 
-    final_state = graph.invoke(initial_state)
-
-    # Extract the last AI message
-    ai_message = final_state["messages"][-1]
-    response_text = ai_message.content
+    try:
+        final_state = graph.invoke(initial_state)
+        ai_message = final_state["messages"][-1]
+        raw_content = getattr(ai_message, "content", str(ai_message))
+        if isinstance(raw_content, list):
+            parts = []
+            for item in raw_content:
+                if isinstance(item, dict) and "text" in item:
+                    parts.append(item["text"])
+                elif isinstance(item, str):
+                    parts.append(item)
+                else:
+                    parts.append(str(item))
+            response_text = "".join(parts)
+        else:
+            response_text = str(raw_content)
+    except Exception as exc:
+        response_text = (
+            f"⚠️ An error occurred while communicating with the Gemini model: {str(exc)}\n\n"
+            "Please check that your GEMINI_API_KEY is valid and has sufficient quota."
+        )
 
     # Persist the assistant reply
     append_message("assistant", response_text)
-
     return response_text
+
